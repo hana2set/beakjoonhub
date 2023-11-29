@@ -27,6 +27,14 @@ class Solution {
         
         
         int[] answer = a.stream().mapToInt(i->i).toArray();
+
+        // 다른사람풀이
+        // int[] answer = new int[list.size()];
+        // int cnt = 0;
+        // for(int num : list)
+        //     answer[cnt++] = num;
+
+        
         return answer;
     }
 }
