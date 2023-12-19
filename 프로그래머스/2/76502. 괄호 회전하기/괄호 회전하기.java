@@ -37,20 +37,7 @@ class Solution {
                     stack.add(c);
                 }
                 
-                
-                switch (c) {
-                       case '{': bracketCnt[0]++; break;
-                       case '}': bracketCnt[0]--; break;
-                       case '[': bracketCnt[1]++; break;
-                       case ']': bracketCnt[1]--; break;
-                       case '(': bracketCnt[2]++; break;
-                       case ')': bracketCnt[2]--; break;
-                       default: break;
-                }
-                
-                if (bracketCnt[0] == 0 
-                   && bracketCnt[1] == 0
-                   && bracketCnt[2] == 0) {
+                if (stack.size() == 0) {
                     outerBracketCnt++;
                 }
             }
