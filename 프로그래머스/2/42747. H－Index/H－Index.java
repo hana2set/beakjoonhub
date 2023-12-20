@@ -15,7 +15,7 @@ class Solution {
                 break;
             }
             
-            //문제가 이상해요
+            //h최대값 = 논문 총 갯수
             if (index == 0 && max > citations.length) {
                 answer = citations.length;
             }
