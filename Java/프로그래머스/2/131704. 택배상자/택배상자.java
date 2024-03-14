@@ -5,34 +5,16 @@ class Solution {
         int answer = 0;
         Stack<Integer> sub = new Stack<>();
         
-        int boxNum = 1;
-        for (int i = 0; i < order.length; i++) {
+        int orderIndex = 0;
+        // i = box index
+        for (int i = 1; i <= order.length; i++) {
+            sub.push(i);
             
-            while (sub.size() > 0 && sub.peek() == order[i]) {
+            while (sub.size() > 0 && sub.peek() == order[orderIndex]) {
                 sub.pop();
                 answer++;
-                i++;
-                if (i >= order.length) {
-                    break;
-                }
+                orderIndex++;
             }
-            
-            boolean isEnd = true;
-            for (; boxNum <= order.length; boxNum++) {
-                if (order[i] == boxNum) {
-                    answer++;
-                    boxNum++;
-                    isEnd = false;
-                    break;
-                } else {
-                    sub.push(boxNum);
-                }
-            }
-            
-            if (isEnd) {
-                break;
-            }
-
         }
         
         return answer;
