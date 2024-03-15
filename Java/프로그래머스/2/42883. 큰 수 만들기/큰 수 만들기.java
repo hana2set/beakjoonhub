@@ -8,9 +8,7 @@ class Solution {
         
         // 큰수 만들기
         for (int i = 0; i < numArr.length; i++) {
-            if (stack.size() == 0) {
-                stack.push(numArr[i]);
-            } else if (k > 0 && stack.peek() < numArr[i]) {
+            if (stack.size() > 0 && k > 0 && stack.peek() < numArr[i]) {
                 stack.pop();
                 k--;
                 i--;
