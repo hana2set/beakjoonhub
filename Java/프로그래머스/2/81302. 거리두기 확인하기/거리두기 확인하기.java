@@ -4,6 +4,8 @@ class Solution {
     public int[] solution(String[][] places) {
         int[] answer = new int[5];
         
+        // 풀이 아이디어 -> P 중심으로 전체검색
+        // 다른사람들 풀이 아이디어 -> P 중심 2 번 DFS (X는 못감)
         
         for (int i = 0; i < places.length; i++) {
             String[] place = places[i];
