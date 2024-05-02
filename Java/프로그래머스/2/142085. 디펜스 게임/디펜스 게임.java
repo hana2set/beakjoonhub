@@ -5,7 +5,7 @@ class Solution {
         int answer = 0;
         int sum = 0;
         
-        //무적권 사용한 q
+        //무적권 사용할 q (최대값만)
         PriorityQueue<Integer> q = new PriorityQueue<>();
         
         for (int i = 0; i < enemy.length; i++) {
@@ -17,18 +17,11 @@ class Solution {
             
             n -= q.poll();
             
-            
             if (n < 0) {
-                answer = i;
-                break;
+                return i;
             }
-        }
+        }        
         
-        if (n >= 0) {
-            answer = enemy.length;
-        }
-        
-        
-        return answer;
+        return enemy.length;
     }
 }
