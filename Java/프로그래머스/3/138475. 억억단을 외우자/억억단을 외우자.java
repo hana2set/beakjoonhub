@@ -1,5 +1,8 @@
 class Solution {
     public int[] solution(int e, int[] starts) {
+        // 메모리, 퍼포먼스 다른로직에 비해 훨씬빠름
+        // 5000ms -> 500ms
+        // 256mb -> 150mb
         int[] res = new int[starts.length];
 
         int[] count = new int[e + 1];
