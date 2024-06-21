@@ -1,53 +1,63 @@
 import java.util.*;
 
 class Solution {
-    
-    private class Num {
-        int number, count;
-        public Num(int number, int count) {
-            this.number = number;
-            this.count = count;
-        }
-    }
-    
-    public int[] solution(int e, int[] starts) {
-        
+    public static int[] solution(int e, int[] starts) {
         int[] answer = new int[starts.length];
-        Num[] dp = new Num[e];
-        
-        for (int i = 1; i <= e; i++) {
-            dp[i-1] = new Num(i, 1);
-        }
-        
-        // 약수 더하기
-        for (int i = 1; i <= e; i++) {
-            for (int j = 2; j <= e/i; j++) {
-                dp[i*j - 1].count++;
+
+        /*
+         * "e 부터" 시작하여 1까지 최대 약수의 개수를 저장함
+         * [0] : 최대 약수의 개수
+         * [1] : 최대 약수의 위치
+         * */
+        int[][] store = new int[e+1][2];
+        store[e][0] = primeCount(e);
+        store[e][1] = e;
+        for(int i=e-1; i>=1; i--){
+            int cnt = primeCount(i);
+
+            // 최대 약수 갱신
+            if(cnt >= store[i+1][0]){
+                store[i][0] = cnt;
+                store[i][1] = i;
+            }else{
+                store[i][0] = store[i+1][0];
+                store[i][1] = store[i+1][1];
             }
         }
-        
-        Arrays.sort(dp, (p1, p2) -> {
-            if (p1.count < p2.count) return 1;
-            else if (p1.count > p2.count) return -1;
-            else {
-                if (p1.number > p2.number) return 1;
-                else return -1;
-            }
-        });
-        
-        
-        
+
         for (int i = 0; i < starts.length; i++) {
-            int start = starts[i];
-            for (int j = 0; j < e; j++) {
-                if (dp[j].number >= start) {
-                    answer[i] = dp[j].number;
-                    break;
-                }
-            }
+            int star = starts[i];
+            answer[i] = store[star][1];
         }
-            
+
         return answer;
     }
-    
+
+    // 소수의 개수
+    private static int primeCount(int n) {
+        /*
+         * primes의 key는 밑이고, value는 지수
+         * 2³일 경우 key : 2, value : 3
+         * 약수의 개수를 구하는 공식을 사용하기 위해, primes에 지수를 저장
+         * */
+        Map<Integer, Integer> primes = new HashMap<>();
+
+        for (int i = 2; i <= Math.sqrt(n); i++) {
+            while (n % i == 0) {
+                primes.put(i, primes.getOrDefault(i, 0) + 1);
+                n /= i;
+            }
+        }
+
+        if (n != 1) {
+            primes.put(n, primes.getOrDefault(n, 0) + 1);
+        }
+
+        int count = 1;
+        List<Map.Entry<Integer, Integer>> list = new ArrayList<>(primes.entrySet());
+        for (Map.Entry<Integer, Integer> entry : list) {
+            count *= (entry.getValue() + 1);
+        }
+        return count;
+    }
 }
