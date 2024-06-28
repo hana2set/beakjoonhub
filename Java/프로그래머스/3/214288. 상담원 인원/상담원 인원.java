@@ -8,8 +8,6 @@ class Solution {
     int answer = Integer.MAX_VALUE;
     int n, k;
     
-    Queue<int[]> CounselorQ;
-    
     public int solution(int k, int n, int[][] reqs) {
         
         this.q = new PriorityQueue[k];
@@ -24,40 +22,16 @@ class Solution {
             counselor[i] = 1;
         }
         
+        counselor[0] += n-k;
         
-        CounselorQ = new LinkedList<>();
-        
-        addCounselorQ(new int[k], 0, n);
-        
-        while (!CounselorQ.isEmpty()){
-            counsel(CounselorQ.poll());
-        }
+        counsel(0);
         
         
         
         return answer;
     }
     
-    public void addCounselorQ(int[] counselor, int index, int n) {
-        if (n < 0) return;
-        if (index == k-1) {
-            if (n==0) return;
-            counselor[index] = n;
-            CounselorQ.add(Arrays.copyOf(counselor, counselor.length));
-            return;
-        }
-        
-        counselor[index] = 1;
-        
-        for (int i = 1; i < n; i++) {
-            counselor[index] = i;
-            addCounselorQ(counselor, index+1, n-i);
-        }
-            
-        
-    }
-    
-    public void counsel(int[] counselor) {
+    public void counsel(int index) {
         int waitingTime = 0;
         
         for (int[] req : reqs) {
@@ -72,6 +46,7 @@ class Solution {
                 c.clear();
                 continue;
             }
+            
             // 상담 유형당 시간 계산
             while (!c.isEmpty()) {
                 int[] req = c.poll();
@@ -81,8 +56,6 @@ class Solution {
                 if (counselerTime[0] > req[0]) {
                     waitingTime += counselerTime[0] - req[0];
                     counselerTime[0] += req[1];
-                    
-                    
                 } else {
                     counselerTime[0] = req[0] + req[1];
                 }
@@ -91,5 +64,23 @@ class Solution {
         }
         
         answer = Math.min(waitingTime, answer);
+        
+        if (index < k-1) {
+            while (counselor[index] > 1) {
+                counselor[index]--;
+                counselor[index+1]++;
+                int next = counselor[index+1];
+                
+                counsel(index+1);
+                
+                counselor[index+1] = next;
+                
+                for (int i = index+2; i < k; i++) {
+                    counselor[i] = 1;
+                }
+                
+            }
+        }
+        
     }
 }
