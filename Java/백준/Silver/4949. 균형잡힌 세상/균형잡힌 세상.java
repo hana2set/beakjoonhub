@@ -45,6 +45,6 @@ class Main {
             bw.write(answer + "\n");
             bw.flush();
         }
-
+        bw.close();
     }
 }
