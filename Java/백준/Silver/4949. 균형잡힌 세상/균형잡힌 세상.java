@@ -5,7 +5,6 @@ class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        Stack<Character> s = new Stack();
 
         while (true) {
             char[] charArr = br.readLine().toCharArray();
@@ -15,7 +14,7 @@ class Main {
             }
 
             String answer = "yes";
-            s.clear();
+            Stack<Character> s = new Stack();
 
             for (char ch : charArr) {
                 if (ch == '(' || ch == '[') {
