@@ -13,40 +13,33 @@ class Main {
         Arrays.sort(arr);
 
         long sum = 0;
+        // 최빈값 계산
         int modeCount = 0;
-        int modeValue = 0;
-
+        int modeValue = arr[0];
         boolean isSecondMode = false;
         int refeat = 1;
         for (int i = 0; i < N; i++) {
             sum += arr[i];
 
-            if (i==0) continue;
-            // 값이 같으면 횟수 추가
-            if (arr[i-1] == arr[i]) {
+            // 값이 같으면 최빈값 횟수 추가
+            if (i!=N-1 && arr[i] == arr[i+1]) {
                 refeat++;
                 continue;
             }
 
-            //값이 다르면 초기화
+            //값이 다르면 최빈값 초기화
             if (modeCount < refeat) {
                 isSecondMode = false;
-                modeValue = arr[i-1];
+                modeValue = arr[i];
                 modeCount = refeat;
             } else if (isSecondMode == false && modeCount == refeat) {
                 isSecondMode = true;
-                modeValue = arr[i-1];
+                modeValue = arr[i];
                 modeCount = refeat;
             }
 
             refeat = 1;
 
-        }
-
-        if (modeCount < refeat) {
-            modeValue = arr[N-1];
-        } else if (isSecondMode == false && modeCount == refeat) {
-            modeValue = arr[N-1];
         }
 
 //        산술평균 : N개의 수들의 합을 N으로 나눈 값. 소수점 이하 첫째 자리에서 반올림한 값
