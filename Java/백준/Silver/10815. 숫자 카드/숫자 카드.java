@@ -27,11 +27,11 @@ class Main {
                 } else if (cards[mid] < arr[i]) {
                     left = mid + 1;
                 } else {
-                    right = mid;
+                    right = mid - 1;
                 }
             }
 
-            if (cards[right] == arr[i]) sb.append(1 + " ");
+            if (cards[left] == arr[i]) sb.append(1 + " ");
             else sb.append(0 + " ");
 
         }
