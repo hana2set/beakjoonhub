@@ -14,9 +14,8 @@ class Main {
         int[] input = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
 
         Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < N; i++) {
-            map.computeIfAbsent(seq[i], a -> 0);
-            map.put(seq[i], map.get(seq[i])+1);
+        for (int num : seq) {
+            map.put(num, map.getOrDefault(num, 0)+1);
         }
 
         StringBuilder sb = new StringBuilder();
