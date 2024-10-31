@@ -16,7 +16,6 @@ class Main {
         for (int num : seq) count[num]++; // 횟수 추가
 
         Stack<Integer> st = new Stack<>();
-        Stack<Integer> indexSt = new Stack<>();
         int[] result = new int[N];
 
         // 스택에 수를 추가하면서 이전 수에 비해 등장횟수가
@@ -25,18 +24,15 @@ class Main {
         for (int i = 0; i < seq.length; i++) {
             int val = seq[i];
 
-            while (!st.isEmpty() && count[val] > count[st.peek()]) {
-                st.pop();
-                result[indexSt.pop()] = val;
+            while (!st.isEmpty() && count[val] > count[seq[st.peek()]]) {
+                result[st.pop()] = val;
             }
 
-            st.add(val);
-            indexSt.add(i);
+            st.add(i);
         }
 
         while (!st.isEmpty()) {
-            st.pop();
-            result[indexSt.pop()] = -1;
+            result[st.pop()] = -1;
         }
 
         StringBuilder sb = new StringBuilder();
