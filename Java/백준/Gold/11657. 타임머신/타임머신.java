@@ -38,7 +38,7 @@ class Main {
         // 모든 간선을 돌며 dist를 초기화
         for (int i = 1; i < N; i++) { // N-1회
 
-//            boolean update = false; //변경 여부
+            boolean update = false; //변경 여부
 
             for (int j = 1; j <= N; j++) { // 모든 간선 루프
                 for (Road road : roads[j]) {
@@ -46,12 +46,12 @@ class Main {
 
                     if (dist[road.t] > dist[j] + road.w) {
                         dist[road.t] = dist[j] + road.w;
-//                        update = true;
+                        update = true;
                     }
                 }
             }
 
-//            if (update == false) break;
+            if (update == false) break;
 
         }
 
@@ -60,7 +60,7 @@ class Main {
         for (int j = 1; j <= N; j++) {
             for (Road road : roads[j]) {
                 if (dist[j] == INF) continue; // 도달 못함
-                
+
                 if (dist[road.t] > dist[j] + road.w) {
                     System.out.println(-1);
                     System.exit(0);
