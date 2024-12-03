@@ -35,6 +35,7 @@ class Main {
         System.out.println(count);
     }
 
+    //에라토스테네스의 체로 계산 (직접계산시 시간초과)
     private static List<Integer> makePrime(int n) {
         List<Integer> list = new ArrayList<>();
 
