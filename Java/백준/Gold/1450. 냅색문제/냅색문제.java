@@ -27,20 +27,34 @@ class Main {
         combi(right, N/2, N, 0);
 
         // 정렬해서, 합이 최대인 인덱스 계산
+        Collections.sort(left);
         Collections.sort(right);
 
-        for (int val : left) {
-            //합이 C보다 작거나 같으면 갯수 추가
-            int r = right.size() - 1;
-            while (r >= 0 && right.get(r) + val > C) {
-                r--;
-            }
+        for (int i = 0; i < left.size(); i++) {
+            // 합이 C보다 작거나 같으면 갯수 추가
+            // -> 상한 인덱스를 합계에 더함
+            int sameValueIndex = upperBound(left, left.get(i));
 
-            count += r + 1;
+            count += (upperBound(right, C - left.get(i))+1) * (sameValueIndex-i+1); // 합이 C 이하인 최대 인덱스 계산
+
+            i = sameValueIndex;
         }
 
 
         System.out.println(count);
+    }
+
+    private static int upperBound(List<Integer> list, int value) {
+        int l = 0, r = list.size()-1;
+
+        while (l <= r) {
+            int mid = (l + r)/2;
+
+            if (list.get(mid) > value) r = mid-1;
+            else l = mid+1;
+        }
+
+        return r;
     }
 
     private static void combi(List<Integer> list, int s, int e, int sum) {
@@ -53,7 +67,8 @@ class Main {
         // s를 추가하거나, 빼는 경우 탐색
         combi(list, s+1, e, sum);
         combi(list, s+1, e, sum + seq[s]);
-
     }
+
+
 
 }
