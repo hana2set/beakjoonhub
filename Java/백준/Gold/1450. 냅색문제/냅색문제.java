@@ -3,10 +3,9 @@ import java.util.*;
 
 class Main {
 
-    static int N;
-    static long C;
+    static int N, C;
     static int[] seq;
-    static List<Long>
+    static List<Integer>
             left = new ArrayList<>(),
             right = new ArrayList<>();
 
@@ -19,7 +18,7 @@ class Main {
         // 각 두 그룹에서 "합의 배열"를 미리 계산해, "양쪽의 합이 C보다 낮은 경우의 수"를 계산함
         String[] temp = br.readLine().split(" ");
         N = Integer.parseInt(temp[0]);
-        C = Long.parseLong(temp[1]);
+        C = Integer.parseInt(temp[1]);
         int count = 0;
         seq = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
 
@@ -30,7 +29,7 @@ class Main {
         // 정렬해서, 합이 최대인 인덱스 계산
         Collections.sort(right);
 
-        for (long val : left) {
+        for (int val : left) {
             //합이 C보다 작거나 같으면 갯수 추가
             int r = right.size() - 1;
             while (r >= 0 && right.get(r) + val > C) {
@@ -44,7 +43,7 @@ class Main {
         System.out.println(count);
     }
 
-    private static void combi(List<Long> list, int s, int e, long sum) {
+    private static void combi(List<Integer> list, int s, int e, int sum) {
         if (sum > C) return;
         if (s == e) {
             list.add(sum);
