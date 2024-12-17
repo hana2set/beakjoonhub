@@ -27,26 +27,22 @@ class Main {
             before[bus[0]][bus[1]] = bus[0];
         }
 
-        int count = 0;
-        while (count++ < n) {
+        // 플로이드-워셜
+        for (int z = 1; z <= n; z++) {
 
-            // 행렬곱
             for (int i = 1; i <= n; i++) {
                 for (int j = 1; j <= n; j++) {
 
-                    for (int z = 1; z <= n; z++) {
+                    if (roads[i][z] == Integer.MAX_VALUE || roads[z][j] == Integer.MAX_VALUE) continue;
+                    if (roads[i][z] + roads[z][j] >= roads[i][j]) continue;
 
-                        if (roads[i][z] == Integer.MAX_VALUE || roads[z][j] == Integer.MAX_VALUE) continue;
-                        if (roads[i][z] + roads[z][j] >= roads[i][j]) continue;
-
-                        roads[i][j] = roads[i][z] + roads[z][j];
-                        before[i][j] = before[z][j]; //직전 위치로 역추적하도록 구성
-                    }
+                    roads[i][j] = roads[i][z] + roads[z][j];
+                    before[i][j] = before[z][j]; //직전 위치로 역추적하도록 구성
                 }
-
             }
 
         }
+
 
         StringBuilder sb = new StringBuilder();
         // i, j 최소 비용
