@@ -5,7 +5,6 @@ class Main {
 
     static int[][] roads;
     static int[] parent;
-    static boolean[] visit;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -14,25 +13,35 @@ class Main {
         int N = Integer.parseInt(br.readLine());
         int M = Integer.parseInt(br.readLine());
 
+        if (M == 1) {
+            System.out.println("NO");
+            return;
+        }
+
         roads = new int[N+1][N+1];
         parent = new int[N+1];
-        visit = new boolean[N+1];
+
+        for (int i = 1; i <= N; i++) {
+            parent[i] = i;
+        }
 
         for (int i = 1; i <= N; i++) {
             String[] input = br.readLine().split(" ");
             for (int j = 1; j <= N; j++) {
                 roads[i][j] = Integer.parseInt(input[j-1]);
+
+                if (roads[i][j] == 1) union(i, j);
             }
 
-            parent[i] = i;
         }
 
         int[] target = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
 
-        dfs(target[0], target[0]);
+
+        int start = find(target[0]);
 
         for (int i = 1; i < target.length; i++) {
-            if (parent[target[i]] != target[0]) {
+            if (start != find(target[i])) {
                 System.out.println("NO");
                 return;
             }
@@ -40,12 +49,22 @@ class Main {
         System.out.println("YES");
     }
 
-    private static void dfs(int s, int value) {
-        visit[s] = true;
-        parent[s] = value;
+    private static int find(int x) {
+        if (x == parent[x]) return x;
 
-        for (int i = 1; i < roads[s].length; i++) {
-            if (roads[s][i] != 0 && visit[i] == false) dfs(i, value);
+        return parent[x] = find(parent[x]);
+    }
+
+    private static void union(int x, int y) {
+        x = find(x);
+        y = find(y);
+
+        if (x == y) return;
+
+        if (x < y) {
+            parent[x] = y;
+        } else {
+            parent[y] = x;
         }
 
     }
