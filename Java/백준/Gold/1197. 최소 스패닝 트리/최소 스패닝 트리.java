@@ -35,7 +35,7 @@ class Main {
             lines[i] = new int[]{s, e, w};
         }
 
-        Arrays.sort(lines, Comparator.comparing(a -> a[2])); //가중치 낮은순 정렬
+        Arrays.sort(lines, Comparator.comparingInt(a -> a[2])); //가중치 낮은순 정렬
 
         for (int i = 0; i < E; i++) {
 
