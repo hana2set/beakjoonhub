@@ -35,6 +35,7 @@ class Main {
             y2[i] = Integer.parseInt(data[3]);
         }
 
+        groupCount = N;
 
         for (int i = 1; i < N; i++) {
             for (int j = i+1; j <= N; j++) {
@@ -48,7 +49,7 @@ class Main {
             }
         }
 
-        groupCount = 0;
+//        groupCount = 0;
         max = 0;
 
         for (int i = 1; i <= N; i++) {
@@ -56,7 +57,7 @@ class Main {
         }
 
         for (int i = 1; i <= N; i++) {
-            if (count[i] > 0) groupCount++;
+//            if (count[i] > 0) groupCount++;
             max = Math.max(count[i], max);
 
         }
@@ -73,9 +74,9 @@ class Main {
 
         if (i != j) {
             parent[j] = i;
-//            count[i] += count[j];
-//            count[j] = 1;
-//            groupCount--;
+            count[i] += count[j];
+            count[j] = 1;
+            groupCount--;
         }
 
 //        return count[i];
