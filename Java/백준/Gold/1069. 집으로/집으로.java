@@ -1,43 +1,54 @@
 import java.io.*;
-import java.util.*;
+import java.util.Arrays;
 
-public class Main {
-	public static void main(String args[]) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+class Main {
 
-		StringTokenizer st = new StringTokenizer(br.readLine());
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		int x = Integer.parseInt(st.nextToken());
-		int y = Integer.parseInt(st.nextToken());
-		int d = Integer.parseInt(st.nextToken());
-		int t = Integer.parseInt(st.nextToken());
+        int[] data = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+        int x = data[0];
+        int y = data[1];
+        int d = data[2];
+        int t = data[3];
 
-		double dist = Math.sqrt(x * x + y * y);
-		double result = dist;
+        double dis = Math.sqrt(Math.pow(x, 2) + Math.pow(y,2));
+        double jump = (double)d/t;
+        double time = Double.MAX_VALUE;
 
-		if (t > d) {
-			bw.write(dist + "\n");
-		} else {
-			int jump = (int) (dist / d);
+        if ( jump > 1 ) {
+            int count = (int) (dis/d);
 
-			double time = dist - d * jump;
+            if (dis == count*d) {
+                time = count*t;
+            } else {
+                if (count == 0) {
+                    double doubleJump = 2*t;
+                    double walk = dis;
+                    double jumpAndBack = t + d - dis;
 
-			result = Math.min(result, time + t * jump);
+                    time = Math.min(time, doubleJump);
+                    time = Math.min(time, walk);
+                    time = Math.min(time, jumpAndBack);
+                } else {
+                    double rest = dis - count*d;
 
-			result = Math.min(result, d * (jump + 1) - dist + t * (jump + 1));
+                    double addJump = t;
+                    double walk = rest;
 
-			if (jump > 0)
-				result = Math.min(result, (double) (jump + 1) * t);
-			else if (dist < d)
-				result = Math.min(result, t * 2.0);
+                    time = Math.min(time, addJump);
+                    time = Math.min(time, walk);
 
-			bw.write(result + "\n");
-		}
-		bw.write(String.format("%.3f", result));
+                    time += count*t;
+                }
+            }
 
-		bw.flush();
-		bw.close();
-		br.close();
-	}
+        } else {
+            time = dis;
+        }
+
+        System.out.println(time);
+
+    }
+
 }
