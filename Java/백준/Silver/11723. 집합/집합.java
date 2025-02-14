@@ -1,52 +1,54 @@
-import java.io.*;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 class Main {
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int m = Integer.parseInt(br.readLine());
+        int s = 0;
+
         StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < m; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            String command = st.nextToken();
 
-        Set set = new HashSet<Integer>();
+            int num;
 
-        int M = Integer.parseInt(br.readLine());
-
-        while (M-- > 0) {
-            String[] input = br.readLine().split(" ");
-            String order = input[0];
-            int num = input.length == 1 ? 0 : Integer.parseInt(input[1]);
-
-            switch (order) {
+            // 비트마스킹 DP로 풀이 가능함.
+            // 원소수가 32개 이하일 경우, int 각 자리 숫자를 통해 집합을 나타냄.
+            // 비트 연산으로 추가,삭제, 등 가능
+            // 기본적으로 1을 자리수만큼 상승( 1 << 자리수 ) 시킨 후 연산자로 숫자를 계산
+            switch (command) {
                 case "add":
-                    set.add(num);
+                    // |(or)연산자를 통해 해당 숫자 표현
+                    num = Integer.parseInt(st.nextToken());
+                    s |= (1 << (num - 1));
                     break;
                 case "remove":
-                    set.remove(num);
+                    // 역(~)을 &(and)연산자를 통해 해당 숫자 표현
+                    num = Integer.parseInt(st.nextToken());
+                    s = s & ~(1 << (num - 1));
                     break;
                 case "check":
-                    if (set.contains(num)) sb.append(1).append("\n");
-                    else sb.append(0).append("\n");
+                    // &(and)연산자를 통해 존재 여부 확인
+                    num = Integer.parseInt(st.nextToken());
+                    sb.append((s & (1 << (num - 1))) != 0 ? 1 : 0).append('\n');
                     break;
                 case "toggle":
-                    if (set.contains(num)) set.remove(num);
-                    else set.add(num);
+                    // ^(XOR)연산자 - 1,0 변환
+                    num = Integer.parseInt(st.nextToken());
+                    s ^= (1 << (num - 1));
                     break;
                 case "all":
-                    set = new HashSet(
-                            Arrays.asList(new Integer[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20})
-                    );
+                    s |= (~0);
                     break;
                 case "empty":
-                    set = new HashSet<Integer>();
+                    s &= 0;
                     break;
             }
-
         }
-
-        System.out.println(sb);
-
+        System.out.print(sb);
     }
-
 }
