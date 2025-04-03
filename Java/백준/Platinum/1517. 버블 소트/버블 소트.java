@@ -20,9 +20,10 @@ class Main {
         arr = Arrays.stream(br.readLine().split(" ")).mapToLong(Long::parseLong).toArray();
 
         // 업데이트할 트리에 대한 정보
+        // 중복값 처리용으로 Queue로 제작. 값과 인덱스 1:1매칭임으로, loop를 N만큼 돌릴 수 있음
         Map<Long, Queue<Integer>> index = new HashMap<>();
         for (int i = 0; i < N; i++) {
-            index.computeIfAbsent(arr[i], k -> new LinkedList<>()).offer(i);
+            index.computeIfAbsent(arr[i], k -> new LinkedList<>()).add(i); 
         }
 
         // arr를 정렬해, 작은 순으로 트리를 update함
@@ -31,21 +32,19 @@ class Main {
         tree = new long[N*4];
         long answer = 0;
 
-        for(int i=0; i<N; i++)	{
-//            for (int idx : index.get(val)) {
-
-            int idx = index.get(arr[i]).poll();
-                // 뒤에서[idx+1, N-1] 자신보다 작은 값 더하기
-                answer += count(0, N-1, 1, idx+1, N-1);
-                // 자기 자신 트리에 업데이트
-                update(0, N-1, 1, idx);
-//            }
+        for (long val : arr) {
+            // N만큼 Queue에 넣었고, arr가 N개임으로 중복 없음
+            int idx = index.get(val).poll();
+            // 뒤에서[idx+1, N-1] 자신보다 작은 값 더하기
+            answer += count(0, N-1, 1, idx+1, N-1);
+            // 자기 자신 트리에 업데이트
+            update(0, N-1, 1, idx);
         }
 
         System.out.println(answer);
     }
 
-    // 세그먼트 트리 갱신
+    // 세그먼트 트리 "idx"만 갱신
     private static void update(int start, int end, int node, int idx) {
         if (start == end) {
             //인덱스마다 한개의 값이 있음으로, 값은 항상 1개
@@ -62,22 +61,11 @@ class Main {
     }
 
     private static long count(int start, int end, int node, int left, int right) {
-//        if (right < start || end < left) return 0;
-//        if (left <= start && end <= right) return tree[node];
-//
-//        int mid = (start + end) / 2;
-//        return count(start, mid, node*2, left, right) + count(mid+1, end, node*2+1, left, right);
-        //구하는 범위를 벗어났을 때
-        if(left > end || right < start) {
-            return 0L;
-        }
-        //구하는 범위에 속했을 때
-        if(left <= start && end <= right){
-            return tree[node];
-        }
-        //하위 노드 탐색
+        if (right < start || end < left) return 0;
+        if (left <= start && end <= right) return tree[node];
+
         int mid = (start + end) / 2;
-        return count(start, mid, node*2, left, right) + count(mid+1, end, node*2 + 1, left, right);
+        return count(start, mid, node*2, left, right) + count(mid+1, end, node*2+1, left, right);
     }
 
 }
