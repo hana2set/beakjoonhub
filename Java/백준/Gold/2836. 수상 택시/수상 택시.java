@@ -26,7 +26,7 @@ class Main {
         }
 
         arr.sort((a, b) -> {
-            if (a[0] == b[0]) return Long.compare(b[1], a[1]);
+            if (a[0] == b[0]) return Long.compare(b[1], a[1]); // 긴 구간을 먼저 정렬해, 작은 구간 스킵
             else return Long.compare(a[0], b[0]);
         });
 
@@ -38,10 +38,12 @@ class Main {
         for (long[] cur : arr) {
             long start = cur[0];
             long end = cur[1];
+            
+            // 긴 구간이 먼저 나옴으로, 해당 구간 스킵. (이미 지난 구간 고려할 필요 없음)
+            if (end < max) continue;
 
             if (max < start) result += (end - start) * 2;
             else if (max < end) result += (end - max) * 2;
-            else continue;
 
             max = end;
         }
